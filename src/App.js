@@ -7,13 +7,9 @@ import { searchRecipesByText } from './hooks';
 
 function App() {
   const initialRecipes = localStorage.getItem('recipes') || [];
-  console.log('InitialRecipes => ', initialRecipes);
   const [recipes, setRecipes] = useState(initialRecipes);
   
-  useEffect(() => {
-    console.log('Recipes in useEffect => ', recipes);
-    localStorage.setItem('recipes', recipes);
-  }, [recipes]);
+  useEffect(() => localStorage.setItem('recipes', recipes), [recipes]);
 
   const getRecipe = e => {
     e.preventDefault();

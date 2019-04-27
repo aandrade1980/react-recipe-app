@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import Form from './components/Form';
 import Recipes from './components/Recipes';
-
-const API_KEY = '845558b03f426f8f1b46c3c916a58c11';
-const default_query = 'shredded%20chicken';
+import { searchRecipesByText } from './hooks';
 
 function App() {
-  const [recipes, setRecipes] = useState([]);
+  const initialRecipes = localStorage.getItem('recipes') || [];
+  console.log('InitialRecipes => ', initialRecipes);
+  const [recipes, setRecipes] = useState(initialRecipes);
   
-  const getRecipe = async e => {
+  useEffect(() => {
+    console.log('Recipes in useEffect => ', recipes);
+    localStorage.setItem('recipes', recipes);
+  }, [recipes]);
+
+  const getRecipe = e => {
     e.preventDefault();
-    const recipeName = e.target.elements.recipeName.value || default_query;
-    const api_call = await fetch(`https://www.food2fork.com/api/search?key=${API_KEY}&q=${recipeName}&count=10`);
-    const data = await api_call.json();
-    console.log(data);
-    if(data.error === "limit") {
-      return setRecipes([]);
-    }
-    return setRecipes(data.recipes);
+    const query = e.target.elements.recipeName.value;
+    searchRecipesByText(query)
+      .then(recipes => setRecipes(recipes))
+      .catch(err => console.log('Error: ', err));
   }
 
   return (

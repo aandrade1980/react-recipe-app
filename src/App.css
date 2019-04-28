@@ -23,6 +23,9 @@ button:focus { outline: none }
   padding: 30px;
   color: white;
   margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1
 }
 
 .App-title { font-size: 1.5em }

@@ -6,10 +6,11 @@ import Recipes from './components/Recipes';
 import { searchRecipesByText } from './hooks';
 
 function App() {
-  const initialRecipes = localStorage.getItem('recipes') || [];
+  const localStorageRecipes = localStorage.getItem('recipes');
+  const initialRecipes = localStorageRecipes ? JSON.parse(localStorageRecipes) : [];
   const [recipes, setRecipes] = useState(initialRecipes);
   
-  useEffect(() => localStorage.setItem('recipes', recipes), [recipes]);
+  useEffect(() => localStorage.setItem('recipes', JSON.stringify(recipes)), [recipes]);
 
   const getRecipe = e => {
     e.preventDefault();
